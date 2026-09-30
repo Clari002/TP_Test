@@ -15,6 +15,10 @@ public class Producto
 
     public virtual void ActualizarPrecio(decimal nuevoPrecio)
     {
+        if (nuevoPrecio < 0)
+        {
+            throw new ArgumentException("El precio no puede ser negativo");
+        }
         Precio = nuevoPrecio;
     }
 }

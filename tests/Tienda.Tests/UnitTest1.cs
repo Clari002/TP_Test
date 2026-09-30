@@ -10,7 +10,7 @@ public class ProductoTests
         
         var producto = new Producto(
             "Notebook",
-            500000m,
+            500000,
             "Electrónica");
 
         
@@ -20,8 +20,19 @@ public class ProductoTests
 
         
         Assert.Equal("Notebook", nombre);
-        Assert.Equal(500000m, precio);
+        Assert.Equal(500000, precio);
         Assert.Equal("Electrónica", categoria);
+    }
+
+    [Fact]
+    public void ActualizarPrecioExcepcion()
+    {
+        var producto = new Producto(
+            "Notebook",
+            500000,
+            "Electrónica");
+        Assert.Throws<ArgumentException>(
+            () => producto.ActualizarPrecio(-1000));
     }
 }
 
@@ -34,7 +45,7 @@ public class TiendaTests
         var tienda = new Tienda();
         var producto = new Producto(
             "Mouse",
-            15000m,
+            15000,
             "Accesorios");
 
     
@@ -51,7 +62,7 @@ public void BuscarProductoNombre()
     var tienda = new Tienda();
     var producto = new Producto(
         "Mouse",
-        15000m,
+        15000,
         "Accesorios");
 
     tienda.AgregarProducto(producto);
@@ -77,7 +88,7 @@ public void EliminarProductoDelInventario()
 
     var producto = new Producto(
         "Mouse",
-        15000m,
+        15000,
         "Accesorios");
 
     tienda.AgregarProducto(producto);
@@ -87,6 +98,15 @@ public void EliminarProductoDelInventario()
 
     
     Assert.Empty(tienda.Inventario);
+}
+
+[Fact]
+public void EliminarProductoInexistente()
+{
+    var tienda = new Tienda();
+
+    Assert.Throws<KeyNotFoundException>(
+        () => tienda.EliminarProducto("Manzana"));
 }
 }
 
