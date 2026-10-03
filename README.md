@@ -9,22 +9,35 @@ Batallan Máximo
 Lenguaje: C#
 Framework: xUnit
 
-##### 1. ¿Puedes identificar pruebas de unidad y de integración en la práctica que se realizó?
+#### 1. ¿Puedes identificar pruebas de unidad y de integración en la práctica que se realizó?
 Sí, se pueden identificar pruebas de unidad en por ejemplo, la creación de un objeto Producto, la incorporación de un producto al inventario, la búsqueda de un producto y su eliminación. 
 También se identifica una prueba de integración cuando para probar un objeto Producto, se lo agrega a una Tienda y posteriormente se utiliza otro método de la tienda sobre ese producto. 
 
-##### 2. ¿Podría haber escrito las pruebas primero antes de modificar el código de la aplicación? ¿Cómo sería el proceso de escribir primero los test?
+#### 2. ¿Podría haber escrito las pruebas primero antes de modificar el código de la aplicación? ¿Cómo sería el proceso de escribir primero los test?
 Si, podria haber escrito las pruebas primero. El proceso sería primero pasar qué comportamiento debería tener el programa y escribir un test que 
 compruebe ese comportamiento. Al ejecutarlo, el test fallaría porque todavía no está implementada ese funcionalidad. Después se modifica el código para que cumpla con lo que pide la prueba y se vuelve a ejecutar el test hasta que pase correctamente. 
 
-##### 3. ¿Qué es un “test double”?
+#### 3. ¿Qué es un “test double”?
 Un Test Double es un objeto "falso" o "simulado" que reemplaza a la clase real, en este caso "Producto" para probar únicamente la lógica de la clase que nos interesa (Tienda) en total aislamiento.
 Es decir, a la clase Tienda no le importa cómo Producto cambia su precio internamente ni si lo guarda bien o mal. A Tienda solo le corresponde la responsabilidad de calcular bien la matemática del descuento y enviarle el nuevo valor al producto llamando a su método ActualizarPrecio. El Mock te permite comprobar exclusivamente que Tienda cumplió su contrato sin depender del código de Producto.
 
-##### ¿Hay otros nombres para los objetos/funciones simulados?
+#### ¿Hay otros nombres para los objetos/funciones simulados?
 El término general es Test Double (Doble de prueba). Los otros nombres o variaciones según su nivel de simulación son: Dummy, Stub, Spy, Mock y Fake.
 
-##### ¿ En lo que va del trabajo práctico, ¿puedes identificar 'Controladores' y 'Resguardos'?
+#### ¿ En lo que va del trabajo práctico, ¿puedes identificar 'Controladores' y 'Resguardos'?
 Controlador: Es el propio marco de pruebas (xUnit) y los métodos etiquetados con [Fact]. Ellos son los que "controlan" la ejecución, preparan el escenario y lanzan las llamadas para evaluar el sistema.   
 
 Resguardo: Es el objeto Mock<Producto> que utilizamos. Sirve como resguardo simulado para devolver datos prefijados y responder a las llamadas de Tienda sin necesidad de instanciar o depender de la lógica real de Producto. 
+
+#### 4. Defina usando palabras propias y según la práctica realizada qué es un fixture. ¿Qué ventajas ve en el uso de fixtures?
+Un Fixture es una clase auxiliar que se encarga de preparar los datos de prueba antes de que se ejecuten los tests. Por ejemplo, antes de implementar el fixture en el tp, en casi todos los métodos se escribía "var tienda = new Tienda();" y se creaban productos a mano con "new Producto("Mouse", 15000, "Accesorios")" duplicando el código.
+Entonces, una clara ventaja del fixture es la reutilización de código, ya que evitamos escribir la instanciación de objetos en cada test.
+Otra ventaja es la Mantenibilidad, si las clases principales cambian su estructura o constructor, solo se actualiza el fixture y no cada uno de los métodos de prueba.
+
+#### ¿Qué enfoque de diseño de pruebas estaríamos aplicando (caja negra/blanca)?
+Estaríamos aplicando un enfoque de Caja Blanca, ya que conocemos la estructura interna del sistema, las propiedades de las clases "Tienda" y "Producto", y cómo interactúan las listas de inventario entre sí para configurar explícitamente los datos de entrada del Fixture.
+
+#### Explique los conceptos de Setup y Teardown en testing.
+Setup (Configuración): Es el proceso o bloque de código que se ejecuta antes de correr las pruebas para preparar las precondiciones, crear objetos en memoria, abrir conexiones o poblar datos (lo que hace el constructor de TiendaFixture).   
+
+Teardown (Limpieza): Es el proceso que se ejecuta después de terminar las pruebas para liberar recursos, eliminar archivos temporales o resetear el estado de la aplicación (en C#/xUnit esto se logra implementando la interfaz IDisposable en la clase del Fixture).

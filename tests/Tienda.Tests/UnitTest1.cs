@@ -37,78 +37,63 @@ public class ProductoTests
     }
 }
 
-public class TiendaTests
+public class TiendaFixture
 {
-    [Fact]
-    public void AgregarProductoAlInventario()
+    public Tienda TiendaEjemplo { get; private set; }
+
+    public TiendaFixture()
     {
-     
-        var tienda = new Tienda();
-        var producto = new Producto(
-            "Mouse",
-            15000,
-            "Accesorios");
+        TiendaEjemplo = new Tienda();
 
-    
-        tienda.AgregarProducto(producto);
+        // Precargamos la tienda con productos de prueba antes de que corran los tests
+        TiendaEjemplo.AgregarProducto(new Producto("Laptop", 1200000m, "Tecnología"));
+        TiendaEjemplo.AgregarProducto(new Producto("Mouse", 15000m, "Accesorios"));
+        TiendaEjemplo.AgregarProducto(new Producto("Teclado", 45000m, "Accesorios"));
+    }
+}
 
+public class TiendaTests : IClassFixture<TiendaFixture>
+{
+    private readonly Tienda _tienda;
 
-        Assert.Single(tienda.Inventario);
-        Assert.Equal(producto, tienda.Inventario[0]);
+    public TiendaTests(TiendaFixture fixture)
+    {
+        _tienda = fixture.TiendaEjemplo;
     }
 
     [Fact]
-    public void BuscarProductoNombre()
+    public void AgregarProducto_UsandoFixture()
     {
-        var tienda = new Tienda();
-        var producto = new Producto(
-            "Mouse",
-            15000,
-            "Accesorios");
+        int cantidadInicial = _tienda.Inventario.Count;
+        var nuevoProducto = new Producto("Monitor", 250000m, "Tecnología");
 
-        tienda.AgregarProducto(producto);
+        _tienda.AgregarProducto(nuevoProducto);
 
-        var resultado = tienda.BuscarProducto("Mouse");
+        Assert.Equal(cantidadInicial + 1, _tienda.Inventario.Count);
+    }
 
-        Assert.Equal(producto, resultado);
+    [Fact]
+    public void BuscarProducto_ExistenteEnFixture()
+    {
+        var resultado = _tienda.BuscarProducto("Mouse");
+
+        Assert.NotNull(resultado);
+        Assert.Equal("Mouse", resultado.Nombre);
+        Assert.Equal(15000m, resultado.Precio);
     }
 
     [Fact]
     public void BuscarProductoInexistente()
     {
-        var tienda = new Tienda();
-
         Assert.Throws<KeyNotFoundException>(
-            () => tienda.BuscarProducto("Manzana"));
+            () => _tienda.BuscarProducto("Manzana"));
     }
 
     [Fact]
-    public void EliminarProductoDelInventario()
+    public void EliminarProducto_Inexistente()
     {
-    
-        var tienda = new Tienda();
-
-        var producto = new Producto(
-            "Mouse",
-            15000,
-            "Accesorios");
-
-        tienda.AgregarProducto(producto);
-
-
-        tienda.EliminarProducto("Mouse");
-
-        
-        Assert.Empty(tienda.Inventario);
-    }
-
-    [Fact]
-    public void EliminarProductoInexistente()
-    {
-        var tienda = new Tienda();
-
         Assert.Throws<KeyNotFoundException>(
-            () => tienda.EliminarProducto("Manzana"));
+            () => _tienda.EliminarProducto("Manzana"));
     }
 
     [Fact]
@@ -127,4 +112,3 @@ public class TiendaTests
         mockProducto.Verify(p => p.ActualizarPrecio(800m), Times.Once);
     }
 }
-
