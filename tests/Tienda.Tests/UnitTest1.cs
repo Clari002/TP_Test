@@ -111,4 +111,15 @@ public class TiendaTests : IClassFixture<TiendaFixture>
         // Como aplique 20% de descuento el nuevo precio deberia ser 800
         mockProducto.Verify(p => p.ActualizarPrecio(800m), Times.Once);
     }
+
+    [Fact]
+    public void CalcularTotalCarritoConDescuento()
+    {
+        //aplico 10% de descuento
+        _tienda.AplicarDescuento("Laptop", 10m);
+
+        var carrito = new List<string> {"Laptop", "Mouse"};
+        decimal totalCalcu = _tienda.CalcularTotalCarrito(carrito);
+        Assert.Equal(1095000m, totalCalcu);
+    }
 }

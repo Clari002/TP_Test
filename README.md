@@ -41,3 +41,11 @@ Estaríamos aplicando un enfoque de Caja Blanca, ya que conocemos la estructura 
 Setup (Configuración): Es el proceso o bloque de código que se ejecuta antes de correr las pruebas para preparar las precondiciones, crear objetos en memoria, abrir conexiones o poblar datos (lo que hace el constructor de TiendaFixture).   
 
 Teardown (Limpieza): Es el proceso que se ejecuta después de terminar las pruebas para liberar recursos, eliminar archivos temporales o resetear el estado de la aplicación (en C#/xUnit esto se logra implementando la interfaz IDisposable en la clase del Fixture).
+
+#### 5. ¿Realizó una prueba de cobertura completa? ¿Qué tipo de cobertura utilizó?
+Si se utilizaron la cobertura de sentencias y la cobertura de decisión/ramas.
+La cobertura de sentencias garantiza que cada línea de código dentro de los métodos CalcularTotalCarrito y BuscarProducto sea ejecutada al menos una vez. La cobertura de ramas evalúa que cada condición lógica (por ejemplo, cuando un producto del carrito existe y cuando no se encuentra o el carrito está vacío) sea probado tanto para el caso verdadero como para el falso. Al probar el flujo normal del carrito con descuentos junto con las pruebas de excepciones previas, se cubren todas las ramas y líneas de la aplicación.
+#### ¿Puede describir una situación de desarrollo para este caso en donde se plantee pruebas de integración ascendente? Describa la situación.
+1. Se desarrolla y prueba de forma aislada la clase Producto, validando su creación y la actualización de precios.
+2. Una vez que Producto funciona correctamente, se construye la clase Tienda y se prueban las operaciones de inventario (AgregarProducto, BuscarProducto, EliminarProducto) utilizando instancias reales de Producto.
+3. Se integra la lógica de negocios del carrito de compras (ClacularTotalCarrito), probando la interacción combinada entre Tienda, Producto y los descuentos.
