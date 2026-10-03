@@ -15,19 +15,19 @@ Librería de Mocks: Moq (instalar comando: "dotnet add package Moq" parados dent
 dotnet test
 
 * Ejecutar las pruebas filtrado por actividad
-Actividad 1 y 2 (Pruebas unitarias básicas y excepciones de Producto): 
+* Actividad 1 y 2 (Pruebas unitarias básicas y excepciones de Producto): 
 dotnet test --filter 'FullyQualifiedName~ProductoTests'
 
-Actividad 1,2,3,4 y 5 (Pruebas de Tienda, Fixtures, Mocks e Integración):
+* Actividad 1,2,3,4 y 5 (Pruebas de Tienda, Fixtures, Mocks e Integración):
 dotnet test --filter  'FullyQualifiedName~TiendaTests'
 
-Actividad 3 (Prueba con Mocks - Moq):
+* Actividad 3 (Prueba con Mocks - Moq):
 dotnet test --filter 'FullyQualifiedName~AplicarDescuento_UsandoMock'
 
-Actividad 4 (Prueba con Fixtures - IClassFixture):
+* Actividad 4 (Prueba con Fixtures - IClassFixture):
 dotnet test --filter 'FullyQualifiedName~BuscarProducto_ExistenteEnFixture'
 
-Actividad 5 (Prueba de Integración y carrito de compras): 
+* Actividad 5 (Prueba de Integración y carrito de compras): 
 dotnet test --filter 'FullyQualifiedName~CalcularTotalCarrito'
 
 ## Respuesta conceptuales 
