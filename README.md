@@ -3,12 +3,34 @@
 Tema: Pruebas del software (uso de un framework de testing)
 
 Integrantes:
-Díaz Claribel Mariela;
-Batallan Máximo
+* Díaz Claribel Mariela
+* Batallan Máximo
 
-Lenguaje: C#
+Lenguaje: C# 
 Framework: xUnit
+Librería de Mocks: Moq (instalar comando: "dotnet add package Moq" parados dentro de la carpeta del proyecto de pruebas: cd test/Tienda.Tests)
 
+## Instrucciones para correr los test
+* Ejecutar todas las pruebas
+dotnet test
+
+* Ejecutar las pruebas filtrado por actividad
+Actividad 1 y 2 (Pruebas unitarias básicas y excepciones de Producto): 
+dotnet test --filter 'FullyQualifiedName~ProductoTests'
+
+Actividad 1,2,3,4 y 5 (Pruebas de Tienda, Fixtures, Mocks e Integración):
+dotnet test --filter  'FullyQualifiedName~TiendaTests'
+
+Actividad 3 (Prueba con Mocks - Moq):
+dotnet test --filter 'FullyQualifiedName~AplicarDescuento_UsandoMock'
+
+Actividad 4 (Prueba con Fixtures - IClassFixture):
+dotnet test --filter 'FullyQualifiedName~BuscarProducto_ExistenteEnFixture'
+
+Actividad 5 (Prueba de Integración y carrito de compras): 
+dotnet test --filter 'FullyQualifiedName~CalcularTotalCarrito'
+
+## Respuesta conceptuales 
 #### 1. ¿Puedes identificar pruebas de unidad y de integración en la práctica que se realizó?
 Sí, se pueden identificar pruebas de unidad en por ejemplo, la creación de un objeto Producto, la incorporación de un producto al inventario, la búsqueda de un producto y su eliminación. 
 También se identifica una prueba de integración cuando para probar un objeto Producto, se lo agrega a una Tienda y posteriormente se utiliza otro método de la tienda sobre ese producto. 
