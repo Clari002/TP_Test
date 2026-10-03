@@ -1,4 +1,5 @@
 ﻿using Tienda;
+using Moq;
 
 namespace Tienda.Tests;
 
@@ -57,56 +58,73 @@ public class TiendaTests
     }
 
     [Fact]
-public void BuscarProductoNombre()
-{
-    var tienda = new Tienda();
-    var producto = new Producto(
-        "Mouse",
-        15000,
-        "Accesorios");
+    public void BuscarProductoNombre()
+    {
+        var tienda = new Tienda();
+        var producto = new Producto(
+            "Mouse",
+            15000,
+            "Accesorios");
 
-    tienda.AgregarProducto(producto);
+        tienda.AgregarProducto(producto);
 
-    var resultado = tienda.BuscarProducto("Mouse");
+        var resultado = tienda.BuscarProducto("Mouse");
 
-    Assert.Equal(producto, resultado);
-}
+        Assert.Equal(producto, resultado);
+    }
 
-[Fact]
-public void BuscarProductoInexistente()
-{
-    var tienda = new Tienda();
+    [Fact]
+    public void BuscarProductoInexistente()
+    {
+        var tienda = new Tienda();
 
-    Assert.Throws<KeyNotFoundException>(
-        () => tienda.BuscarProducto("Manzana"));
-}
-[Fact]
-public void EliminarProductoDelInventario()
-{
-  
-    var tienda = new Tienda();
+        Assert.Throws<KeyNotFoundException>(
+            () => tienda.BuscarProducto("Manzana"));
+    }
 
-    var producto = new Producto(
-        "Mouse",
-        15000,
-        "Accesorios");
-
-    tienda.AgregarProducto(producto);
-
-
-    tienda.EliminarProducto("Mouse");
-
+    [Fact]
+    public void EliminarProductoDelInventario()
+    {
     
-    Assert.Empty(tienda.Inventario);
-}
+        var tienda = new Tienda();
 
-[Fact]
-public void EliminarProductoInexistente()
-{
-    var tienda = new Tienda();
+        var producto = new Producto(
+            "Mouse",
+            15000,
+            "Accesorios");
 
-    Assert.Throws<KeyNotFoundException>(
-        () => tienda.EliminarProducto("Manzana"));
-}
+        tienda.AgregarProducto(producto);
+
+
+        tienda.EliminarProducto("Mouse");
+
+        
+        Assert.Empty(tienda.Inventario);
+    }
+
+    [Fact]
+    public void EliminarProductoInexistente()
+    {
+        var tienda = new Tienda();
+
+        Assert.Throws<KeyNotFoundException>(
+            () => tienda.EliminarProducto("Manzana"));
+    }
+
+    [Fact]
+    public void AplicarDescuento_UsandoMock()
+    {
+        var tienda = new Tienda();
+
+        // Creo un MOCK (doble de prueba u "objeto falso") de Producto.
+        var mockProducto = new Mock<Producto>("Televisor", 1000m, "Electro");
+
+        tienda.AgregarProducto(mockProducto.Object);
+
+        tienda.AplicarDescuento("Televisor", 20m);
+
+        // Como aplique 20% de descuento el nuevo precio deberia ser 800
+        mockProducto.Verify(p => p.ActualizarPrecio(800m), Times.Once);
+    }
 }
 

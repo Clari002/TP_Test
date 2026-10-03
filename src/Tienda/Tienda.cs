@@ -11,23 +11,32 @@ public class Tienda
         inventario.Add(producto);
     }
 
-   public Producto BuscarProducto(string nombre)
-{
-    var producto = inventario.FirstOrDefault(p =>
-        p.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
-
-    if (producto == null)
+    public Producto BuscarProducto(string nombre)
     {
-        throw new KeyNotFoundException(
-            $"No se encontró el producto '{nombre}'.");
-    }
+        var producto = inventario.FirstOrDefault(p =>
+            p.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
 
-    return producto;
-}
+        if (producto == null)
+        {
+            throw new KeyNotFoundException(
+                $"No se encontró el producto '{nombre}'.");
+        }
+
+        return producto;
+    }
 
     public void EliminarProducto(string nombre)
     {
         var producto = BuscarProducto(nombre);
         inventario.Remove(producto);
+    }
+
+    public void AplicarDescuento(string nombre, decimal porcentajeDescuento)
+    {
+        var producto = BuscarProducto(nombre);
+        
+        decimal nuevoPrecio = producto.Precio * (1 - (porcentajeDescuento / 100m));
+        
+        producto.ActualizarPrecio(nuevoPrecio);
     }
 }
